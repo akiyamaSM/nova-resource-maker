@@ -1,0 +1,21 @@
+{
+    "name": "inani/nova-resource-maker",
+    "description": "A Laravel Nova package to help you generate resources",
+    "keywords": ["Laravel", "Nova", "CRUD", "resources", "php"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Inani El Houssain",
+            "email": "inanielhoussain@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+      "psr-4": {
+        "Inani\\nova-resource-maker\\": "src/"
+      }
+    },
+    "require": {
+      "laravel/nova": "~5"
+    }
+}
