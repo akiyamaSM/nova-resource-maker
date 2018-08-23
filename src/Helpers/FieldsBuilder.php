@@ -36,8 +36,19 @@ class FieldsBuilder
         $rules = explode('|', $rule);
         $this->fileds[$this->current] ["rules"] = $rules;
     }
+
     public function getQueryBuilder()
     {
         return $this->fileds;
+    }
+
+    public function build()
+    {
+        foreach($this->fileds as $field){
+            echo "{$field['type']}::make()";
+            if(isset($field['rules'])){
+                echo "->rule('". implode("', '", $field['rules']) ."')";
+            }
+        }
     }
 }

@@ -70,6 +70,8 @@ class MakeNovaResource extends Command
         do{
             $this->workOnTheCurrentField(array_pop($names),array_pop($this->fields));
         }while($this->confirm('Do you wish to continue?') && count($this->fields) > 0);
+
+        $this->build();
     }
 
     /**
@@ -110,5 +112,10 @@ class MakeNovaResource extends Command
         }
         // Get visibility
 
+    }
+
+    public function build()
+    {
+        $this->builder->build();
     }
 }
