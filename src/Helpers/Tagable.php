@@ -3,6 +3,37 @@ namespace Inani\NovaResourceMaker\Helpers;
 
 trait Tagable {
 
+
+    protected $options = [
+        'int' => [
+            'ID',
+            'INTEGER'
+        ],
+        'text' => [
+            'TEXT'
+        ],
+        'timestamp' => [
+            'DateTime'
+        ],
+        'datetime' => [
+            'DateTime'
+        ],
+        'date' => [
+            'Date'
+        ]
+    ];
+
+    /**
+     * Get options by type
+     *
+     * @param $type
+     * @return array
+     */
+    protected function getOptionsByType($type)
+    {
+        return isset($this->options[$type])? $this->options[$type] : [];
+    }
+
     /**
      * Get the type of fields reorganized
      *

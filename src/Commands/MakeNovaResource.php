@@ -2,16 +2,17 @@
 
 namespace Inani\NovaResourceMaker\Commands;
 
+use Inani\NovaResourceMaker\Helpers\FieldsBuilder;
+use Inani\NovaResourceMaker\Helpers\Tagable;
+use Inani\NovaResourceMaker\Helpers\Querable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Inani\NovaResourceMaker\Helpers\Tagable;
 use ReflectionClass;
 
 class MakeNovaResource extends Command
 {
-    use Tagable;
+    use Tagable,
+        Querable;
 
     protected $fields = [];
 
@@ -28,14 +29,16 @@ class MakeNovaResource extends Command
      * @var string
      */
     protected $description = 'Generate the array of fields';
+    protected $builder;
 
     /**
      * Create a new command instance.
-     *
+     * @param FieldsBuilder $builder
      */
-    public function __construct()
+    public function __construct(FieldsBuilder $builder)
     {
         parent::__construct();
+        $this->builder = $builder;
     }
 
     /**
@@ -45,21 +48,28 @@ class MakeNovaResource extends Command
      */
     public function handle()
     {
+
+        $model = $this->ask("What is the name of the Model?");
+
+        if( !$this->checkIfModelExists($model)){
+            $this->error("Model {$model} doesn't exist!");
+            return;
+        }
+        // Get all fields and reverse the order
+        $this->fields = array_reverse(
+            $this->tagThem(
+                $this->getColumnList(new $model())
+            )
+        );
+
+        if(count($this->fields) == 0){
+            $this->error("No Columns found for the model {$model}");
+            return;
+        }
+        $names = array_keys($this->fields);
         do{
-            $model = $this->ask("What is the name of the Model?");
-
-            if( !$this->checkIfModelExists($model)){
-                $this->error("Model {$model} doesn't exist!");
-                return;
-            }
-            // Get all fields
-            $this->fields = $this->tagThem($this->getColumnList(new $model()));
-            dd($this->fields);
-                // foreach field try to propose options
-
-            // Relationships?
-
-        }while($this->confirm('Do you wish to continue?'));
+            $this->workOnTheCurrentField(array_pop($names),array_pop($this->fields));
+        }while($this->confirm('Do you wish to continue?') && count($this->fields) > 0);
     }
 
     /**
@@ -82,25 +92,20 @@ class MakeNovaResource extends Command
         return true;
     }
 
-    /**
-     * Get Column list
-     *
-     * @param $model
-     * @return mixed
-     */
-    private function getColumnList($model){
-        return $this->getColumnListing($model->getTable());
-    }
 
-
-    /**
-     * Get Columns with types
-     *
-     * @param $table
-     * @return array
-     */
-    protected function getColumnListing($table)
+    public function workOnTheCurrentField($name, $column)
     {
-        return DB::select(DB::raw('SHOW COLUMNS FROM '. $table));
+        // Get the field Type
+        $option_key = $this->choice(
+            "These are the options for the {$column['type']}?",
+            $this->getOptionsByType($column['type'])
+        );
+
+        $this->builder->add($name, $option_key);
+
+        // Get rules
+
+        // Get visibility
+        
     }
 }
