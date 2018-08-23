@@ -1,6 +1,6 @@
 {
     "name": "inani/nova-resource-maker",
-    "description": "A Laravel Nova package to help you generate resources",
+    "description": "A Laravel Nova package to help you generate resources fields",
     "keywords": ["Laravel", "Nova", "CRUD", "resources", "php"],
     "license": "MIT",
     "authors": [
@@ -17,5 +17,12 @@
     },
     "require": {
       "laravel/nova": "~5"
+    },
+    "extra": {
+      "laravel": {
+        "providers": [
+          "Inani\\NovaResourceMaker\\NovaResourceMakerServiceProvider"
+        ]
+      }
     }
 }
