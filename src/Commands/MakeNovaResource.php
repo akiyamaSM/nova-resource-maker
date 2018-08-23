@@ -21,7 +21,7 @@ class MakeNovaResource extends Command
      *
      * @var string
      */
-    protected $signature = 'nova-resource:make';
+    protected $signature = 'nova-resource-fields:generate';
 
     /**
      * The console command description.
