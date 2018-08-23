@@ -4,8 +4,9 @@ namespace Inani\NovaResourceMaker\Commands;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use ReflectionClass;
-use Schema;
 
 class MakeNovaResource extends Command
 {
@@ -46,10 +47,8 @@ class MakeNovaResource extends Command
                 $this->error("Model {$model} doesn't exist!");
                 return;
             }
-
-            $instance = new $model();
-            dd($this->getColumnList($instance));
             // Get all fields
+            $fields = $this->getColumnList(new $model());
 
                 // foreach field try to propose options
 
@@ -85,6 +84,18 @@ class MakeNovaResource extends Command
      * @return mixed
      */
     private function getColumnList($model){
-        return Schema::getColumnListing($model->getTable());
+        return $this->getColumnListing($model->getTable());
+    }
+
+
+    /**
+     * Get Columns with types
+     *
+     * @param $table
+     * @return array
+     */
+    protected function getColumnListing($table)
+    {
+        return DB::select(DB::raw('SHOW COLUMNS FROM '. $table));
     }
 }
