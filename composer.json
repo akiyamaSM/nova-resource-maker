@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "autoload": {
       "psr-4": {
-        "Inani\\nova-resource-maker\\": "src/"
+        "Inani\\NovaResourceMaker\\": "src/"
       }
     },
     "extra": {
