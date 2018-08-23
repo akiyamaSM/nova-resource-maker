@@ -66,9 +66,12 @@ class MakeNovaResource extends Command
             $this->error("No Columns found for the model {$model}");
             return;
         }
-        $names = array_keys($this->fields);
+
         do{
-            $this->workOnTheCurrentField(array_pop($names),array_pop($this->fields));
+            $selected = $this->choice("Select the field to include",
+                $this->getExistingFields()
+            );
+            $this->workOnTheCurrentField($selected, $this->popElement($selected));
         }while($this->confirm('Do you wish to continue?') && count($this->fields) > 0);
 
         $this->build();
@@ -99,7 +102,7 @@ class MakeNovaResource extends Command
     {
         // Get the field Type
         $option_key = $this->choice(
-            "These are the options for the {$column['type']}?",
+            "These are the options for the {$name} ({$column['type']})?",
             $this->getOptionsByType($column['type'])
         );
 
@@ -117,5 +120,18 @@ class MakeNovaResource extends Command
     public function build()
     {
         $this->builder->build();
+    }
+
+    public function getExistingFields()
+    {
+        return array_keys($this->fields);
+    }
+
+    public function popElement($element)
+    {
+        $selected = $this->fields[$element];
+        unset($this->fields[$element]);
+
+        return $selected;
     }
 }

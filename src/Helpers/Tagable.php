@@ -7,10 +7,15 @@ trait Tagable {
     protected $options = [
         'int' => [
             'ID',
-            'INTEGER'
+            'Number'
         ],
-        'text' => [
-            'TEXT'
+        'varchar' => [
+            'Text',
+            'Password',
+        ],
+        'text' =>[
+            'Text',
+            'Markdown'
         ],
         'timestamp' => [
             'DateTime'
@@ -62,6 +67,10 @@ trait Tagable {
     {
         if(strpos($type, 'int') !== false){
             return 'int';
+        }
+
+        if(strpos($type, 'varchar') !== false){
+            return 'varchar';
         }
 
         return $type;

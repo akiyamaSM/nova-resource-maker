@@ -42,12 +42,17 @@ class FieldsBuilder
         return $this->fileds;
     }
 
+    /**
+     *  Generate the fields
+     *
+     */
     public function build()
     {
-        foreach($this->fileds as $field){
-            echo "{$field['type']}::make()";
+        foreach($this->fileds as $name => $field){
+            echo "{$field['type']}::make('". snake_case($name) ."','{$name}')";
             if(isset($field['rules'])){
                 echo "->rule('". implode("', '", $field['rules']) ."')";
+                echo ";" .PHP_EOL;
             }
         }
     }
