@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Inani\NovaResourceMaker\Helpers\Tagable;
 use ReflectionClass;
 
 class MakeNovaResource extends Command
 {
+    use Tagable;
+
+    protected $fields = [];
+
     /**
      * The name and signature of the console command.
      *
@@ -48,8 +53,8 @@ class MakeNovaResource extends Command
                 return;
             }
             // Get all fields
-            $fields = $this->getColumnList(new $model());
-
+            $this->fields = $this->tagThem($this->getColumnList(new $model()));
+            dd($this->fields);
                 // foreach field try to propose options
 
             // Relationships?
