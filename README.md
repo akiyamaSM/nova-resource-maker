@@ -11,6 +11,14 @@ First, install the package through Composer.
 ```php
 composer require inani/nova-resource-maker
 ```
+Then include the service provider inside config/app.php.
+```php
+'providers' => [
+    ...
+    Inani\NovaResourceMaker\NovaResourceMakerServiceProvider::class,
+    ...
+];
+```
 
 ## Usage
 Run the commande line
