@@ -110,28 +110,30 @@ class MakeNovaResource extends Command
 
         // Get rules
         if($this->confirm("Do you want to attach rules?")){
-            $rules = $this->ask("Type the name of the rule serrated by a |");
+            $rules = $this->ask("Type the name of the rule separated by a |");
             $this->builder->addRules($rules);
         }
         // Get visibility
+        if($this->confirm("Is there any special exception on the visibility of the field?")){
+            list($headers, $available_methods) = $this->builder->drawAvailableRules();
+            $this->table($headers, $available_methods);
+            $methods = $this->ask("Type the name of the rule separated by a |");
+            $this->builder->addMethods($methods);
+        }
 
+        // Sortable
+        if($this->confirm("Is it sortable?")){
+            $this->builder->sortable();
+        }
     }
 
+    /**
+     *  Build the fields array
+     */
     public function build()
     {
         $this->builder->build();
     }
 
-    public function getExistingFields()
-    {
-        return array_keys($this->fields);
-    }
 
-    public function popElement($element)
-    {
-        $selected = $this->fields[$element];
-        unset($this->fields[$element]);
-
-        return $selected;
-    }
 }

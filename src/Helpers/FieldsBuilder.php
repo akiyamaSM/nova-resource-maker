@@ -7,8 +7,29 @@ namespace Inani\NovaResourceMaker\Helpers;
 class FieldsBuilder
 {
 
-    protected $fileds = [];
+    protected $fields = [];
 
+    protected $headers = [
+      'code', 'method', 'explanation'
+    ];
+
+    protected $available_methods = [
+        [
+            'code' => 0,
+            'method' => 'hideFromIndex',
+            'explantation' => ''
+        ],
+        [
+            'code' => 1,
+            'method' => 'hideFromDetail',
+            'explantation' => ''
+        ],
+        [
+            'code' => 2,
+            'method' => 'hideWhenCreating',
+            'explantation' => ''
+        ],
+    ];
     protected $current;
 
     /**
@@ -21,7 +42,7 @@ class FieldsBuilder
     public function add($name, $type)
     {
         $this->current = $name;
-        $this->fileds [$name] ['type'] = $type;
+        $this->fields [$name] ['type'] = $type;
 
         return $this;
     }
@@ -34,12 +55,12 @@ class FieldsBuilder
     public function addRules($rule)
     {
         $rules = explode('|', $rule);
-        $this->fileds[$this->current] ["rules"] = $rules;
+        $this->fields[$this->current] ["rules"] = $rules;
     }
 
     public function getQueryBuilder()
     {
-        return $this->fileds;
+        return $this->fields;
     }
 
     /**
@@ -48,12 +69,58 @@ class FieldsBuilder
      */
     public function build()
     {
-        foreach($this->fileds as $name => $field){
+        foreach($this->fields as $name => $field){
             echo "{$field['type']}::make('". snake_case($name) ."','{$name}')";
+            // rules
             if(isset($field['rules'])){
                 echo "->rule('". implode("', '", $field['rules']) ."')";
-                echo ";" .PHP_EOL;
             }
+
+            // Visibilities
+            if(isset($field['visibility'])){
+                echo "->" . implode("()->", $field['visibility']) . "()";
+            }
+
+            if(isset($field['sortable'])){
+                echo "->sortable()";
+            }
+            echo "," .PHP_EOL;
+
         }
+    }
+
+    /**
+     * Draw available methods
+     *
+     * @return array
+     */
+    public function drawAvailableRules()
+    {
+        return [$this->headers, $this->available_methods];
+    }
+
+    /**
+     * Add visibility methods
+     *
+     * @param $methods
+     * @return $this
+     */
+    public function addMethods($methods)
+    {
+        $methods = explode('|', $methods);
+        foreach($methods as $method){
+            $this->fields[$this->current] ["visibility"] [] = $this->available_methods[$method]['method'];
+        }
+
+        return $this;
+    }
+
+    /**
+     * Make the field sortable
+     *
+     */
+    public function sortable()
+    {
+        $this->fields[$this->current]['sortable'] = true;
     }
 }
