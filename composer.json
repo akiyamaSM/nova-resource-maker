@@ -15,9 +15,6 @@
         "Inani\\nova-resource-maker\\": "src/"
       }
     },
-    "require": {
-      "laravel/nova": "~5"
-    },
     "extra": {
       "laravel": {
         "providers": [
