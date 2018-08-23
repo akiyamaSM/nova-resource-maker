@@ -104,8 +104,11 @@ class MakeNovaResource extends Command
         $this->builder->add($name, $option_key);
 
         // Get rules
-
+        if($this->confirm("Do you want to attach rules?")){
+            $rules = $this->ask("Type the name of the rule serrated by a |");
+            $this->builder->addRules($rules);
+        }
         // Get visibility
-        
+
     }
 }
