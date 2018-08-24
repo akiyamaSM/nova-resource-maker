@@ -1,15 +1,15 @@
 # nova-resource-maker ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
 A Nova tool that will help you to generate fields array for the resource.
-you can check this [post](https://medium.com/@InaniT0/generate-your-resource-fields-with-no-pain-108d7369489e) on how to use it
+<br>You can check this [medium post](https://medium.com/@InaniT0/generate-your-resource-fields-with-no-pain-108d7369489e) on how to use it
 
 ## Installation
 
 ### Requirements
 * Laravel Nova
 
-First, install the package through Composer.
-```php
+First, install the package through [Composer](https://getcomposer.org/).
+```bash
 composer require inani/nova-resource-maker
 ```
 ## Usage
