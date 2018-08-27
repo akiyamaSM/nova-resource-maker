@@ -18,6 +18,8 @@ Run the commande line
 ```bash
 php artisan nova-resource-fields:generate
 ```
+> if your model within `app` folder, you can just set Model Name only without full namespace
+
 And then just answer to the questions and copy the result.
 ## Comming soon
 Include more elements like relationships...

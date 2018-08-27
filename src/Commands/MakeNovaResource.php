@@ -48,13 +48,20 @@ class MakeNovaResource extends Command
      */
     public function handle()
     {
-
         $model = $this->ask("What is the name of the Model?");
+        // check if model created as laravel default Models
+        // if true set Fullname space
+        if ( file_exists(app_path($model.'.php')) ) 
+        {
+            $model = '\\App\\'.$model;
+        }
 
-        if( !$this->checkIfModelExists($model)){
+        if ( !$this->checkIfModelExists($model) ) 
+        {
             $this->error("Model {$model} doesn't exist!");
             return;
         }
+
         // Get all fields and reverse the order
         $this->fields = array_reverse(
             $this->tagThem(
@@ -67,12 +74,12 @@ class MakeNovaResource extends Command
             return;
         }
 
-        do{
+        do {
             $selected = $this->choice("Select the field to include",
                 $this->getExistingFields()
             );
             $this->workOnTheCurrentField($selected, $this->popElement($selected));
-        }while($this->confirm('Do you wish to continue?') && count($this->fields) > 0);
+        } while ($this->confirm('Do you wish to continue?') && count($this->fields) > 0);
 
         $this->build();
     }
