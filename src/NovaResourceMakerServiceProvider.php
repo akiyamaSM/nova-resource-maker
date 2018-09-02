@@ -27,13 +27,4 @@ class NovaResourceMakerServiceProvider extends ServiceProvider
             ]);
         }
     }
-
-    /**
-     * Register the poll writer instance.
-     *
-     * @return void
-     */
-    protected function registerPollWriter()
-    {
-    }
 }

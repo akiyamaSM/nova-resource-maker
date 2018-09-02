@@ -73,6 +73,10 @@ trait FieldsManager
     public function addMethods($methods)
     {
         $methods = explode('|', $methods);
+        if($this->notValidEntry($methods)){
+            return false;
+        }
+
         foreach($methods as $method){
             $this->fields[$this->current] ["visibility"] [] = $this->available_methods[$method]['method'];
         }
@@ -97,5 +101,30 @@ trait FieldsManager
     public function drawAvailableRules()
     {
         return [$this->headers, $this->available_methods];
+    }
+
+    /**
+     * Check if there are any invalid entry
+     *
+     * @param $methods
+     * @return bool
+     */
+    protected function notValidEntry($methods)
+    {
+        $not_valid_elements = array_filter($methods, function($key){
+            // not valid range
+            if( count($this->available_methods) <= $key || $key < 0 ){
+                return true;
+            }
+
+            // not a integer
+            if( !is_numeric($key)){
+                return true;
+            }
+
+            return false;
+        });
+
+        return count($not_valid_elements) > 0 ;
     }
 }

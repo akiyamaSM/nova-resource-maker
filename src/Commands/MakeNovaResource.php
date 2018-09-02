@@ -122,10 +122,13 @@ class MakeNovaResource extends Command
         }
         // Get visibility
         if($this->confirm("Is there any special exception on the visibility of the field?")){
+
             list($headers, $available_methods) = $this->builder->drawAvailableRules();
             $this->table($headers, $available_methods);
-            $methods = $this->ask("Type the name of the rule separated by a |");
-            $this->builder->addMethods($methods);
+            do{
+                $methods = $this->ask("Type the name of the rule separated by a |");
+
+            }while( $this->builder->addMethods($methods) == false );
         }
 
         // Sortable
