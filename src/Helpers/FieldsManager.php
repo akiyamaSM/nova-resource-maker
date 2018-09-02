@@ -105,7 +105,7 @@ trait FieldsManager
 
     /**
      * Check if there are any invalid entry
-     * 
+     *
      * @param $methods
      * @return bool
      */
