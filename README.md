@@ -1,5 +1,8 @@
-# nova-resource-maker ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
-
+# nova-resource-maker
+[![License](https://poser.pugx.org/inani/nova-resource-maker/license)](https://packagist.org/packages/inani/nova-resource-maker)
+[![Total Downloads](https://poser.pugx.org/inani/nova-resource-maker/downloads)](https://packagist.org/packages/inani/nova-resource-maker)
+![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+[![Latest Stable Version](https://poser.pugx.org/inani/nova-resource-maker/v/stable)](https://packagist.org/packages/inani/nova-resource-maker)
 A Nova tool that will help you to generate fields array for the resource.
 <br>You can check this [medium post](https://medium.com/@InaniT0/generate-your-resource-fields-with-no-pain-108d7369489e) on how to use it
 
