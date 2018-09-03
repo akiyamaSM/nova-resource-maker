@@ -38,7 +38,7 @@ trait Querable {
     }
 
     /**
-     * Get the selected element and remove it formn the array
+     * Get the selected element and remove it from the array
      *
      * @param $element
      * @return mixed
