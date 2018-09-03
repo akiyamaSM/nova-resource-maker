@@ -2,9 +2,10 @@
 
 namespace Inani\NovaResourceMaker\Commands;
 
+use Inani\NovaResourceMaker\Helpers\CanGenerateRelationShips;
 use Inani\NovaResourceMaker\Helpers\FieldsBuilder;
-use Inani\NovaResourceMaker\Helpers\Tagable;
 use Inani\NovaResourceMaker\Helpers\Querable;
+use Inani\NovaResourceMaker\Helpers\Tagable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Command;
 use ReflectionClass;
@@ -12,7 +13,8 @@ use ReflectionClass;
 class MakeNovaResource extends Command
 {
     use Tagable,
-        Querable;
+        Querable,
+        CanGenerateRelationShips;
 
     protected $fields = [];
 
@@ -29,6 +31,7 @@ class MakeNovaResource extends Command
      * @var string
      */
     protected $description = 'Generate the array of fields';
+
     protected $builder;
 
     /**
@@ -69,6 +72,9 @@ class MakeNovaResource extends Command
             )
         );
 
+
+        $this->fields = array_merge($this->fields, $this->buildRelationShips($model));
+
         if(count($this->fields) == 0){
             $this->error("No Columns found for the model {$model}");
             return;
@@ -81,6 +87,7 @@ class MakeNovaResource extends Command
             $this->workOnTheCurrentField($selected, $this->popElement($selected));
         } while ($this->confirm('Do you wish to continue?') && count($this->fields) > 0);
 
+        $this->buildRelationShips($model);
         $this->build();
     }
 
@@ -107,12 +114,16 @@ class MakeNovaResource extends Command
 
     public function workOnTheCurrentField($name, $column)
     {
-        // Get the field Type
-        $option_key = $this->choice(
-            "These are the options for the {$name} ({$column['type']})?",
-            $this->getOptionsByType($column['type'])
-        );
-
+        if($this->getOptionsByType($column['type']) != null){
+            // Get the field Type
+            $option_key = $this->choice(
+                "These are the options for the {$name} ({$column['type']})?",
+                $this->getOptionsByType($column['type'])
+            );
+        }
+        if(!isset($option_key)){
+            $option_key = $column['type'];
+        }
         $this->builder->add($name, $option_key);
 
         // Get rules
