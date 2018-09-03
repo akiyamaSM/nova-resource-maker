@@ -21,9 +21,21 @@ php artisan nova-resource-fields:generate
 > if your model within `app` folder, you can just set Model Name only without full namespace
 
 And then just answer to the questions and copy the result.
-## Comming soon
-Include more elements like relationships...
-
+## Relationships
+Now its possible to generate the relationships, all you have to do is to add the name of the relationship class in the Doc comment of the method
+```php
+/**
+ * Get the posts
+ *
+ * @relation('HasMany')
+ * @return \Illuminate\Database\Eloquent\Relations\HasMany
+ */
+public function posts()
+{
+    return $this->hasMany(Post::class);
+}
+```
+    
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
