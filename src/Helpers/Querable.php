@@ -24,7 +24,32 @@ trait Querable {
      */
     protected function getColumnListing($table)
     {
-        return DB::select(DB::raw('SHOW COLUMNS FROM '. $table));
+        if (DB::connection()->getConfig("driver") === "pgsql") {
+            $schema = DB::connection()->getConfig("schema");
+            return collect(
+                DB::select(
+                    DB::raw("
+                        SELECT data_type AS Type,
+                            column_name AS Field,
+                            NULL AS Extra
+                        FROM information_schema.columns
+                        WHERE table_schema = '{$schema}'
+                            AND table_name   = '{$table}'
+                    ")
+                )
+            )
+            ->map(function ($result) {
+                $field = new stdClass;
+                $field->Type = $result->type;
+                $field->Field = $result->field;
+                $field->Extra = $result->extra;
+
+                return $field;
+            })
+            ->toArray();
+        }
+
+        return DB::select(DB::raw("SHOW COLUMNS FROM {$table}"));
     }
 
     /**
