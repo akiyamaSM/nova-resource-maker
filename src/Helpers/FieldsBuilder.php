@@ -48,7 +48,7 @@ class FieldsBuilder
             echo "{$field['type']}::make('". snake_case($name) ."','{$name}')";
             // rules
             if(isset($field['rules'])){
-                echo "->rule('". implode("', '", $field['rules']) ."')";
+                echo "->rules('". implode("', '", $field['rules']) ."')";
             }
 
             // Visibilities
