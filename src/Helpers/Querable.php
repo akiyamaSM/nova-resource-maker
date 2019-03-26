@@ -39,7 +39,7 @@ trait Querable {
                 )
             )
             ->map(function ($result) {
-                $field = new stdClass;
+                $field = new \stdClass;
                 $field->Type = $result->type;
                 $field->Field = $result->field;
                 $field->Extra = $result->extra;
